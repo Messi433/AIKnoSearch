@@ -1,0 +1,243 @@
+{% extends "base.html" %}
+{% load  staticfiles %}
+{% block title %}
+    <title>Welcome to AIKno</title>
+{% endblock %}
+{% block  script %}
+    <script src="{% static 'js/common.js' %}"></script>
+    <script src="{% static 'js/index.js' %}"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //搜索相关操作
+            index();
+            //登录相关操作
+            commonLogin();
+            //清空历史记录
+            clear_history();
+        });
+    </script>
+    <script type="text/javascript">
+        //轮播
+        $(document).ready(function () {
+            var recommandBox = $(".recommand-box");
+            var recommandBoxContent = recommandBox.find(".recommand-box-content");
+            var itemWidth = recommandBox.find(".recommand-item").eq(0).width();//获得每个item的width(448.4)
+            var itemWidth = itemWidth + 42;
+            var number = recommandBox.find(".points .point");
+            var timer = null;
+            var per_index = 0;
+            //每个point绑定click事件，完成切换颜色和动画，以及读取参数值
+            number.on("click", function () {
+                $(this).addClass("active").siblings(".point").removeClass("active");
+                per_index = $(this).index();//获得下标
+                recommandBoxContent.animate({
+                    "right": itemWidth * per_index,    //ul标签的动画为向左移动；
+                });
+            });
+            //左右按钮的控制效果
+            $(".arrow-right").stop(true, true).click(function () {
+                per_index++;
+                if (per_index == number.length) {
+                    per_index = 0
+                }
+                ;
+                number.eq(per_index).trigger("click");
+            });
+            $(".arrow-left").stop(true, true).click(function () {
+                per_index--;
+                if (per_index == number.length) {
+                    per_index = 0
+                }
+                ;
+                number.eq(per_index).trigger("click");
+            });
+
+
+        })
+    </script>
+{% endblock %}
+{% block main %}
+    <div id="container-main">
+        <header id="top-warp" class="navbar">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="{% url 'index' %}">AIKnoSearch</a>
+                </div>
+
+                <div class="collapse navbar-collapse pull-right">
+                    <ul class="nav navbar-nav">
+                        {% if request.user.is_authenticated %}
+                            <li class="index-user">
+                                <a class="btn dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown">
+                                    {% if request.user.nickname %}
+                                        <span class="">{{ request.user.nickname }}</span>
+                                    {% else %}
+                                        <span class="">{{ request.user.username }}</span>
+                                    {% endif %}
+                                </a>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                                    <li role="presentation">
+                                        <a role="menuitem" tabindex="-1" href="{% url 'logout' %}">退出</a>
+                                    </li>
+                                    <!--
+                                    bug
+                                    <li role="presentation">
+                                        <a role="menuitem" tabindex="-1" href="#person">个人中心</a>
+                                    </li>
+                                    -->
+                                </ul>
+                            </li>
+                            <li class="index-user-ico"><a href="#person"><span class="glyphicon glyphicon-user"></span></a>
+                            </li>
+                        {% else %}
+                            <li><a data-toggle="modal" data-target="#login" href=""><span
+                                    class="glyphicon glyphicon-log-in"></span> 登录</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+                <!-- /.nav-collapse -->
+            </div><!-- /.container -->
+        </header>
+        <div id="search-warp">
+            <div class="logo-box">
+                <div class="logo">
+                    <img src="{% static 'img/logo/aiknosearch.png' %}" alt="">
+                </div>
+            </div>
+            <div class="nav">
+                <ul class="searchType">
+                    <li class="typeItem current" data-type="blog">博客</li>
+                    <li class="typeItem" data-type="course">课程</li>
+                    <!--<li class="typeItem" data-type="graph">知识图谱</li>-->
+                </ul>
+            </div>
+            <div class="search-box">
+                <input type="text" placeholder="开启你的学习之旅" class="search-input form-control">
+                <button type="button" class="button-search" onclick="search()">
+                    <img src="{% static 'img/icon/search.png' %}" alt="">
+                </button>
+                <ul class="suggestList">
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                </ul>
+                {% if request.user.is_authenticated %}
+                    {% if histories %}
+                        <ul class="historyList">
+                            {% for history in histories %}
+                                <li class="historyList-li"><span>{{ history }}</span></li>
+                            {% endfor %}
+                            <li class="history-clear"><a href="{% url 'clear_history' %}"
+                                                         class="history-clear-a pull-right">清空历史记录</a>
+                            </li>
+                        </ul>
+                    {% else %}
+                        <ul class="topList">
+                            {% for topi in topn %}
+                                <li class="topList-li">
+                                    <div class="top-number-index pull-left color-orange-b">{{ forloop.counter }}</div>
+                                    <span class="">{{ topi }}</span>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% else %}
+                    <ul class="topList">
+                        {% for topi in topn %}
+                            <li class="topList-li">
+                                <div class="top-number-index pull-left color-orange-b">{{ forloop.counter }}</div>
+                                <span>{{ topi }}</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+        </div>
+        {% if request.user.is_authenticated %}
+            {% if data %}
+                <div id="recommand-warp">
+                    <div class="recommand-box">
+                        <div class="recommand-box-content">
+                            {% for datum in data %}
+                                <div class="recommand-item">
+                                    <div class="item-main pull-left">
+                                        <p class="item-title">
+                                            <a href="{{ datum.url }}">{{ datum.title }}
+                                            </a>
+                                        </p>
+                                        <div class="item-content">
+                                            <a href="{{ datum.url }}">
+                                                {{ datum.content }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="item-img pull-right">
+                                        <img src="{% static 'img/logo/aikno_sublogo.png' %}" alt="">
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <span class="arrow arrow-left pull-left" href="#arrow-l">&lt;</span>
+                        <span class="arrow arrow-right pull-right" href="#arrow-r">&gt;</span>
+                        <ul class="points">
+                            <li class="point active"></li>
+                            <li class="point"></li>
+                            <li class="point"></li>
+                            <li class="point"></li>
+                        </ul>
+                    </div>
+                </div>
+            {% endif %}
+        {% endif %}
+        <!--模态登录-->
+        <div id="login" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <button class="close login-cancel" data-dismiss="modal">
+                            <span>&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-title">
+                        <h1 class="text-center">登录</h1>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-group login-form" action="" method="post">
+                            <div class="alert alert-danger error-login-div" style="display: none">
+                                <span class=" alert-link error-login-msg"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="">用户名</label>
+                                <input class="form-control login-username login-input" type="text"
+                                       placeholder="请输入用户名或邮箱"
+                                       name="login-username">
+                            </div>
+                            <div class="form-group">
+                                <label for="">密码</label>
+                                <input class="form-control login-password login-input" type="password"
+                                       placeholder="请输入密码" name="login-password">
+                            </div>
+                            <div class="text-right">
+                                <button class="btn btn-primary login-submit" type="button">登录</button>
+                                <button class="btn btn-danger login-cancel" data-dismiss="modal">取消</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer" style="border-top: none">
+                        <span><a href="{% url 'register' %}" class="pull-left">没有账号?点击注册</a></span>
+                        <span><a href="{% url 'reset' %}" class="pull-right">忘记密码?</a></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block footer %}
+    <footer id="footer">
+        <p>Copyright © 2018 站长信箱aiknosearch@163.com</p>
+    </footer>
+{% endblock %}

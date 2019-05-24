@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block title %}
+    <title>该链接不存在</title>
+{% endblock %}
+{% block script %}
+
+{% endblock %}
+{% block main %}
+    <!-- 注册窗口 -->
+    <header id="top-warp" class="navbar " role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="{% url 'index' %}">AIKno Search</a>
+            </div>
+            <!-- /.nav-collapse -->
+        </div><!-- /.container -->
+    </header>
+    <div id="register-main">
+        <div class="register-l">
+            <div class="modal-title">
+                <h1 class="text-center">用户注册</h1>
+            </div>
+            <div class="modal-body">
+                <div class="activate">
+                    <div class="activate-title-box">
+                        <span class="activate-title">您输入的激活链接有误</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block footer %}
+    <div id="sub_footer">
+        <span>Copyright © 2018 站长信箱aiknosearch@163.com</span>
+    </div>
+{% endblock %}

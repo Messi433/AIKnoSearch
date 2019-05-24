@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block title %}
+    <title>用户账号激活</title>
+{% endblock %}
+{% block script %}
+    <script src="{% static 'js/common.js' %}"></script>
+    <script src="{% static 'js/jquery.rotate.min.js' %}"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            commonLogin();
+            $(function () {
+                var value = 0;
+                var flag = true;
+                $('.down').rotate({
+                    bind: {
+                        click: function () {
+                            value += 180;
+                            $(this).rotate({
+                                animateTo: value,
+                                easing: $.easing.easeInOutExpo
+                            });
+                            if (flag) {
+                                $(".settlement").show();
+                                flag = false;
+                            } else {
+                                $(".settlement").hide();
+                                flag = true;
+                            }
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}
+{% block main %}
+    <!-- 注册窗口 -->
+    <header id="top-warp" class="navbar " role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="{% url 'index' %}">AIKno Search</a>
+            </div>
+            <div class="collapse navbar-collapse pull-right">
+                <ul class="nav navbar-nav">
+                    已有账号?现在就
+                    <a data-toggle="modal" data-target="#login" href="">
+                        <button class="btn login-btn">登录</button>
+                    </a>
+                </ul>
+            </div>
+            <!-- /.nav-collapse -->
+        </div><!-- /.container -->
+    </header>
+    <div id="register-main" class="">
+        <div class="register-l">
+            <div class="modal-title">
+                <h1 class="text-center">用户注册</h1>
+            </div>
+            <div class="modal-body">
+                <div class="activate">
+                    <div class="activate-title-box">
+                        <img src="{% static 'img/icon/mail.png' %}">
+                        <span class="activate-title">最后一步！请激活您的邮箱,完成用户注册</span>
+                    </div>
+                    <div class="activate-body">
+                        <p class="color-gray">验证邮件已发送到您的邮箱<span>{{ email }}</span>，</p>
+                        <p class="color-gray"><a href="{{ email_access }}" class="color-blue">前往邮箱</a>&nbsp;&nbsp;登录并激活账号
+                        </p>
+                    </div>
+                    <div class="activate-tips">
+                        <p class=" color-subred">
+                            <!-- <img class="up tips_button" src="img/icon/up_circle.png"> -->
+                            <img class="down tips_button" src="{% static 'img/icon/down_circle.png' %}">
+                            &nbsp;&nbsp;我没有收到激活邮件?
+                        </p>
+                        <div class="settlement color-gray">
+                            可能是网络延时,请耐心等待;<br>
+                            查看垃圾邮件;<br>
+                            将<span class="color-blue">aiknosearch@163.com</span>加入邮箱白名单。<br>
+                        </div>
+                        <div class="activate-bottom">
+                            <a href="{% url 'index' %}">
+                                <button class="activate-return" type="button">
+                                    稍后激活,返回首页
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--模态登录-->
+    <div id="login" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button class="close login-cancel" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-title">
+                    <h1 class="text-center">登录</h1>
+                </div>
+                <div class="modal-body">
+                    <form class="form-group login-form" action="" method="post">
+                        <div class="alert alert-danger error-login-div" style="display: none">
+                            <span class=" alert-link error-login-msg"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">用户名</label>
+                            <input class="form-control login-username login-input" type="text" placeholder="请输入用户名或邮箱"
+                                   name="login-username">
+                        </div>
+                        <div class="form-group">
+                            <label for="">密码</label>
+                            <input class="form-control login-password login-input" type="password"
+                                   placeholder="请输入密码" name="login-password">
+                        </div>
+                        <div class="text-right">
+                            <button class="btn btn-primary login-submit" type="button">登录</button>
+                            <button class="btn btn-danger login-cancel" data-dismiss="modal">取消</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer" style="border-top: none">
+                    <span><a href="{% url 'reset' %}" class="pull-right">忘记密码?</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block footer %}
+    <div id="sub_footer">
+        <span>Copyright © 2018 站长信箱aiknosearch@163.com</span>
+    </div>
+{% endblock %}

@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block title %}
+    <title>邮箱信息修改</title>
+{% endblock %}
+{% block script %}
+    <script src="{% static 'js/common.js' %}"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            commonLogin();
+            checkResetFocus();
+            // 验证表单是否可以提交
+            $(".reset-form").submit(function () {
+                var flag = true;
+                if (checkEmail() == false) flag = false;
+                if (checkPassword() == false) flag = false;
+                if (checkRepassword() == false) flag = false;
+                if (checkEmailCode() == false) flag = false;
+                if (checkCaptcha() == false) flag = false;
+                return flag;
+            });
+            EmailVeri();
+            //ajax验证码刷新
+            $('#js-ajax-refresh').on('click', function () {
+                $.getJSON("/captcha/refresh/", function (result) {
+                    $('#js-ajax-refresh').attr('src', result['image_url']); //刷新图片验证码
+                    $('#id_captcha_0').val(result['key']) //刷新hashkey
+                });
+            });
+        });
+    </script>
+{% endblock %}
+{% block main %}
+    <!-- 重置窗口 -->
+    <header id="top-warp" class="navbar " role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="{% url 'index' %}">AIKno Search</a>
+            </div>
+            <div class="collapse navbar-collapse pull-right">
+                <ul class="nav navbar-nav">
+                    <a data-toggle="modal" data-target="#login" href="">
+                        <button class="btn login-btn">登录</button>
+                    </a>
+                </ul>
+            </div>
+            <!-- /.nav-collapse -->
+        </div><!-- /.container -->
+    </header>
+    <div id="register-main">
+        <div class="register-l">
+            <form class="form-horizontal reset-form" role="form" action="{% url 'reset' %}" method="post">
+                <fieldset>
+                    <legend>账号信息修改</legend>
+                </fieldset>
+                {% if msg %}
+                    <div class="msg-div">
+                        <span class="">{{ msg }}</span>
+                    </div>
+                {% endif %}
+                {% if re_msgs %}
+                    {% for re_msg in re_msgs %}
+                        <div class="msg-div">
+                            <span class="">{{ re_msg }}</span>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                {% if reset_form %}
+                    {% for key,error in reset_form.errors.items %}
+                        <span class="">{{ error }}</span>
+                    {% endfor %}
+                {% endif %}
+                <div class="form-group">
+                    <label for="password" class="col-sm-2 control-label">邮箱</label>
+                    <div class="col-sm-4">
+                        <input class="form-control reset-input" name="email" id="email" type="email"
+                               placeholder="请输入邮箱账号">
+                    </div>
+                    <div class="right-label">
+                        <label class="help-block email-label">通过邮箱验证码进行账户信息修改</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password" class="col-sm-2 control-label">密码</label>
+                    <div class="col-sm-4">
+                        <input class="form-control reset-input" name="password" id="password"
+                               type="password" placeholder="请输入密码">
+                    </div>
+                    <div class="right-label">
+                        <label class="help-block password-label">8-16位字母、数字、和指定的特殊字符，至少包含一个字母和数字</label>
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <label for="repassword" class="col-sm-2 control-label">重复密码</label>
+                    <div class="col-sm-4">
+                        <input class="form-control reset-input" name="repassword" id="repassword"
+                               type="password" placeholder="重复密码">
+                    </div>
+                    <div class="right-label">
+                        <label class="help-block repassword-label"></label>
+                    </div>
+                </div>
+                <div class="form-group captcha">
+                    <label for="repassword" class="col-sm-2 control-label">邮箱验证码</label>
+                    <div class="col-sm-4">
+                        <input class="form-control reset-input email-code" name="email_code" id="email_code"
+                               type="text" placeholder="请输入邮箱验证码">
+                    </div>
+                    <div class="right-label">
+                        <label class="help-block email-code-label">
+                            <input class="email-code-btn code-btn" type="button" value="获取验证码">
+                            <span class="email-code-span msg-error"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group captcha">
+                    <label for="captcha" class="col-sm-2 control-label">图形验证码</label>
+                    <div class="col-sm-4">
+                        <input id="id_captcha_1" name="captcha_1" autocomplete="off"
+                               class="form-control reset-input captcha-input pull-left" type="text"
+                               placeholder="请输入验证码">
+                    </div>
+                    <div class="right-label">
+                        <label class="help-block">
+                            <img src="{{ image_url }}" alt="" id="js-ajax-refresh" class="">
+                            <span class="captcha-span msg-error"></span>
+                        </label>
+                        <input id="id_captcha_0" name="captcha_0" type="hidden" value="{{ hashkey }}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-4">
+                        <button type="submit" class="btn btn-primary reset-submit">立即修改</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!--模态登录-->
+    <div id="login" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button class="close login-cancel" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-title">
+                    <h1 class="text-center">登录</h1>
+                </div>
+                <div class="modal-body">
+                    <form class="form-group login-form" action="" method="post">
+                        <div class="alert alert-danger error-login-div" style="display: none">
+                            <span class=" alert-link error-login-msg"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">用户名</label>
+                            <input class="form-control login-username login-input" type="text" placeholder="请输入用户名或邮箱"
+                                   name="login-username">
+                        </div>
+                        <div class="form-group">
+                            <label for="">密码</label>
+                            <input class="form-control login-password login-input" type="password"
+                                   placeholder="请输入密码" name="login-password">
+                        </div>
+                        <div class="text-right">
+                            <button class="btn btn-primary login-submit" type="button">登录</button>
+                            <button class="btn btn-danger login-cancel" data-dismiss="modal">取消</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block footer %}
+    <footer id="footer">
+        <div class="container footer-box">
+            <p>站内所有资源仅供学习与参考，请勿用于商业用途，否则产生的一切后果将由您自己承担！ </p>
+            <p>Copyright © 2018 站长信箱aiknosearch@163.com</p>
+        </div>
+    </footer>
+{% endblock %}

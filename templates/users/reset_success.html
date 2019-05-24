@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block title %}
+    <title>账号信息修改成功</title>
+{% endblock %}
+{% block script %}
+    <script type="text/javascript">
+        var index_url ='/';
+        $(document).ready(function() {
+            function back(count) {
+                window.setTimeout(function(){
+                    count--;
+                    $('.time').html(count);
+                    if(count > 0) {
+                        $('#time').attr('innerHTML', count);
+                        back(count);
+                    } else {
+                        location.href=index_url;
+                    }
+                }, 1000);
+            }
+            back(5);
+    });
+    </script>
+{% endblock %}
+{% block main %}
+    <header id="top-warp" class="navbar " role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="{% url 'index' %}">AIKno Search</a>
+            </div>
+            <!-- /.nav-collapse -->
+        </div><!-- /.container -->
+    </header>
+    <div id="register-main" class="">
+        <div class="register-l">
+            <div class="modal-title">
+                <h1 class="text-center">账号信息修改成功</h1>
+            </div>
+            <div class="reset-success">
+                <span class="time color-subred">5</span>&nbsp;&nbsp;秒&nbsp;后返回
+                <a href="{% url 'index'%}" class="color-blue">首页</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
