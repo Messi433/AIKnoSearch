@@ -150,7 +150,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/templates/test.html" />
         <option value="$PROJECT_DIR$/requirements.txt" />
         <option value="$PROJECT_DIR$/commons/test/phrase_test.py" />
         <option value="$PROJECT_DIR$/apps/phrase/views.py" />
@@ -183,7 +182,6 @@
         <option value="$PROJECT_DIR$/templates/base.html" />
         <option value="$PROJECT_DIR$/static/css/style.css" />
         <option value="$PROJECT_DIR$/static/js/index.js" />
-        <option value="$PROJECT_DIR$/AIKnoSearch/settings.py" />
         <option value="$PROJECT_DIR$/apps/search/views.py" />
         <option value="$PROJECT_DIR$/apps/users/forms.py" />
         <option value="$PROJECT_DIR$/commons/utils.py" />
@@ -201,6 +199,8 @@
         <option value="$PROJECT_DIR$/templates/users/mail/email_register.html" />
         <option value="$PROJECT_DIR$/apps/users/views.py" />
         <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/AIKnoSearch/settings.py" />
+        <option value="$PROJECT_DIR$/AIKnoSearch/__init__.py" />
       </list>
     </option>
   </component>
@@ -225,11 +225,6 @@
               <item name="AIKnoSearch" type="b2602c69:ProjectViewProjectNode" />
               <item name="AIKnoSearch" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="AIKnoSearch" type="b2602c69:ProjectViewProjectNode" />
-              <item name="AIKnoSearch" type="462c0819:PsiDirectoryNode" />
-              <item name="apps" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -248,7 +243,7 @@
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="restartRequiresConfirmation" value="false" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="vcs.Git" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -466,7 +461,7 @@
       <workItem from="1558420608408" duration="6986000" />
       <workItem from="1558533250375" duration="1436000" />
       <workItem from="1558601407824" duration="1198000" />
-      <workItem from="1558680983689" duration="3303000" />
+      <workItem from="1558680983689" duration="5499000" />
     </task>
     <task id="LOCAL-00001" summary="final 11/24">
       <created>1543044189988</created>
@@ -493,7 +488,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="244949000" />
+    <option name="totallyTimeSpent" value="247145000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -633,13 +628,6 @@
     </watches-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/apps/users/forms.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-99">
-          <caret line="23" column="103" lean-forward="true" selection-start-line="23" selection-start-column="103" selection-end-line="23" selection-end-column="103" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/users/mail/email_update.html">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -968,17 +956,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/AIKnoSearch/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1542">
-          <caret line="29" column="12" selection-start-line="29" selection-start-column="12" selection-end-line="29" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/commons/veri_code.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
           <caret line="17" column="4" selection-start-line="17" selection-start-column="4" selection-end-line="17" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AIKnoSearch/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AIKnoSearch/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret selection-end-column="23" />
         </state>
       </provider>
     </entry>

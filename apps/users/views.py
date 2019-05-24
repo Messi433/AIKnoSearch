@@ -155,7 +155,7 @@ class Register(View):
             if user_is_active == False:
                 user_date_time = user.date_joined
                 # 如果用户未激活，且在数据库中存在时间>900s == 15min
-                if self.calculate_delta_time(user_date_time) > 2.0:
+                if self.calculate_delta_time(user_date_time) > 900.0:
                     # 删除用户及用户信息
                     EmailVerification.objects.get(email=user.email).delete()
                     user.delete()

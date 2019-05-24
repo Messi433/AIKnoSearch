@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Django settings for AIKnoSearch project.
 
@@ -93,7 +94,12 @@ DATABASES = {
         'USER': 'root',
         'PASSWORD': 'k753951',
         'HOST': '127.0.0.1',
-        'PORT': '3306'
+        'PORT': '3306',
+        'TEST': {
+            'CHARSET': 'utf8',
+            'COLLATION': 'utf8_general_ci',
+        }
+
     }
 }
 
