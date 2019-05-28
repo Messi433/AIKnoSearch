@@ -197,11 +197,11 @@ class ResetPassword(View):
         return render(request, 'users/reset.html', locals())
 
     def post(self, request):
-        reset_form = ResetPasswordForm(request.POST)
         # 验证码参数
         hashkey = CaptchaStore.generate_key()
         image_url = captcha_image_url(hashkey)
-        reset_form = ResetPasswordForm()
+
+        reset_form = ResetPasswordForm(request.POST)
         if reset_form.is_valid():
             # 表单
             email = request.POST.get('email', "")
